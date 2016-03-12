@@ -962,8 +962,7 @@ defmodule Plug.Conn do
     :ok
   end
 
-  # Any string containing an UPPERCASE char is not valid.
-  defp valid_header_key?(<<h, _::binary>>) when h in ?A..?Z, do: false
+  defp valid_header_key?(<<h, _::binary>>), do: true
   defp valid_header_key?(<<_, t::binary>>), do: valid_header_key?(t)
   defp valid_header_key?(<<>>), do: true
   defp valid_header_key?(_), do: false

@@ -358,11 +358,10 @@ defmodule Plug.ConnTest do
     end
   end
 
-  test "put_resp_header/3 raises when invalid header key given" do
-    conn = conn(:get, "/foo")
-    assert_raise Plug.Conn.InvalidHeaderError, ~S[header key is not lowercase: "X-Foo"], fn ->
-      conn |> put_resp_header("X-Foo", "bar")
-    end
+  test "put_resp_header/3 not raises when uppercase header key given" do
+    conn = conn(:head, "/foo") |> put_resp_header("X-foo", "bar")
+    assert get_resp_header(conn, "X-foo") == ["bar"]
+    assert get_resp_header(conn, "x-foo") == []
   end
 
   test "put_resp_header/3 raises when invalid header value given" do
@@ -473,11 +472,10 @@ defmodule Plug.ConnTest do
     end
   end
 
-  test "put_req_header/3 raises when invalid header key given" do
-    conn = conn(:get, "/foo")
-    assert_raise Plug.Conn.InvalidHeaderError, ~S[header key is not lowercase: "X-Foo"], fn ->
-      conn |> put_req_header("X-Foo", "bar")
-    end
+  test "put_req_header/3 not raises when uppercase header key given" do
+    conn = conn(:head, "/foo") |> put_resp_header("X-foo", "bar")
+    assert get_resp_header(conn, "X-foo") == ["bar"]
+    assert get_resp_header(conn, "x-foo") == []
   end
 
   test "delete_req_header/2" do
